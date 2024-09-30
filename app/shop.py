@@ -1,7 +1,5 @@
 import json
 
-from app.main import get_shop_list
-
 
 class Shop:
     def __init__(
@@ -21,3 +19,11 @@ class Shop:
 
         shops = get_shop_list(data)
         return shops
+
+
+def get_shop_list(data: dict) -> list[Shop]:
+    shops_list = data.get("shops")
+    return [
+        Shop(**shop)
+        for shop in shops_list
+    ]

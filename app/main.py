@@ -1,7 +1,7 @@
 import json
 
 from app.customer import Customer
-from app.shop import Shop
+from app.shop import get_shop_list
 from app.car import Car
 
 
@@ -25,14 +25,6 @@ def get_customer_list(data: dict) -> list[Customer]:
     ]
 
 
-def get_shop_list(data: dict) -> list[Shop]:
-    shops_list = data.get("shops")
-    return [
-        Shop(**shop)
-        for shop in shops_list
-    ]
-
-
 def shop_trip() -> None:
     with open("app/config.json", "r") as file:
         data = json.load(file)
@@ -53,9 +45,12 @@ def shop_trip() -> None:
         if min_cost < customer.money:
             print(f"{customer.name} rides to {cheapest_shop.name}\n")
             customer.print_receipt(cheapest_shop)
-            print(f"{customer.name} rides home\n")
+            print(f"{customer.name} rides home")
             cost = customer.cost_of_trip(cheapest_shop, customer.car)
             print(f"{customer.name} now has {customer.money - cost} dollars\n")
         else:
             print(f"{customer.name} doesn't have enough "
                   f"money to make a purchase in any shop")
+
+
+# shop_trip()
