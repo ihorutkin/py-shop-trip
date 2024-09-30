@@ -12,17 +12,17 @@ class Shop:
         self.location = location
         self.products = products
 
-    @staticmethod
-    def get_list_of_shops() -> list:
+    @classmethod
+    def get_list_of_shops(cls) -> list:
         with open("app/config.json", "r") as file:
             data = json.load(file)
 
-        shops_list = data["shops"]
+        shops_list = data.get("shops")
         shops = [
             Shop(
-                name=shop["name"],
-                location=shop["location"],
-                products=shop["products"]
+                name=shop.get("name"),
+                location=shop.get("location"),
+                products=shop.get("products")
             )
             for shop in shops_list
         ]

@@ -5,36 +5,44 @@ from app.shop import Shop
 from app.car import Car
 
 
-def shop_trip() -> None:
-    with open("app/config.json", "r") as file:
-        data = json.load(file)
+def get_customer_list(data: dict) -> list[Customer]:
+    customers_list = data.get("customers")
+    fuel_price = data.get("FUEL_PRICE")
 
-    customers_list = data["customers"]
-    fuel_price = data["FUEL_PRICE"]
-    customers = [
+    return [
         Customer(
-            name=person["name"],
-            product_cart=person["product_cart"],
-            location=person["location"],
-            money=person["money"],
+            name=person.get("name"),
+            product_cart=person.get("product_cart"),
+            location=person.get("location"),
+            money=person.get("money"),
             car=Car(
-                person["car"]["brand"],
-                person["car"]["fuel_consumption"],
+                person["car"].get("brand"),
+                person["car"].get("fuel_consumption"),
                 fuel_price
             )
         )
         for person in customers_list
     ]
 
-    shops_list = data["shops"]
-    shops = [
+
+def get_shop_list(data: dict) -> list[Shop]:
+    shops_list = data.get("shops")
+    return [
         Shop(
-            name=shop["name"],
-            location=shop["location"],
-            products=shop["products"]
+            name=shop.get("name"),
+            location=shop.get("location"),
+            products=shop.get("products")
         )
         for shop in shops_list
     ]
+
+
+def shop_trip() -> None:
+    with open("app/config.json", "r") as file:
+        data = json.load(file)
+
+    customers = get_customer_list(data)
+    shops = get_shop_list(data)
 
     for customer in customers:
         min_cost = 1000000
@@ -57,6 +65,3 @@ def shop_trip() -> None:
         else:
             print(f"{customer.name} doesn't have enough "
                   f"money to make a purchase in any shop")
-
-
-# shop_trip()
