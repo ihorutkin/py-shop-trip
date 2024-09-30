@@ -36,10 +36,10 @@ class Customer:
               f"costs {self.cost_of_trip(shop, car)}")
 
     def make_shopping(self, shop: Shop) -> float:
-        total_cost = 0
-        for product, amount in self.product_cart.items():
-            total_cost += shop.products[product] * amount
-        return total_cost
+        return sum(
+            shop.products[product] * amount
+            for product, amount in self.product_cart.items()
+        )
 
     def print_receipt(self, shop: Shop) -> None:
         total_cost = self.make_shopping(shop)

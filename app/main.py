@@ -28,11 +28,7 @@ def get_customer_list(data: dict) -> list[Customer]:
 def get_shop_list(data: dict) -> list[Shop]:
     shops_list = data.get("shops")
     return [
-        Shop(
-            name=shop.get("name"),
-            location=shop.get("location"),
-            products=shop.get("products")
-        )
+        Shop(**shop)
         for shop in shops_list
     ]
 
@@ -55,13 +51,11 @@ def shop_trip() -> None:
                 min_cost = customer.cost_of_trip(shop, customer.car)
                 cheapest_shop = shop
         if min_cost < customer.money:
-            print(f"{customer.name} rides to {cheapest_shop.name}")
-            print("")
+            print(f"{customer.name} rides to {cheapest_shop.name}\n")
             customer.print_receipt(cheapest_shop)
-            print(f"{customer.name} rides home")
+            print(f"{customer.name} rides home\n")
             cost = customer.cost_of_trip(cheapest_shop, customer.car)
-            print(f"{customer.name} now has {customer.money - cost} dollars")
-            print("")
+            print(f"{customer.name} now has {customer.money - cost} dollars\n")
         else:
             print(f"{customer.name} doesn't have enough "
                   f"money to make a purchase in any shop")

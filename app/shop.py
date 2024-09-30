@@ -1,5 +1,7 @@
 import json
 
+from app.main import get_shop_list
+
 
 class Shop:
     def __init__(
@@ -17,13 +19,5 @@ class Shop:
         with open("app/config.json", "r") as file:
             data = json.load(file)
 
-        shops_list = data.get("shops")
-        shops = [
-            Shop(
-                name=shop.get("name"),
-                location=shop.get("location"),
-                products=shop.get("products")
-            )
-            for shop in shops_list
-        ]
+        shops = get_shop_list(data)
         return shops
